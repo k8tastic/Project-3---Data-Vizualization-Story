@@ -1,144 +1,126 @@
-#################################################
-# Hi Project Team!!
-# This is a PLACEHOLDER for our Flask App. 
-#################################################
-
-
-import os
+import argparse
 
 import pandas as pd
-import numpy as np
-
-import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
-
-# from flask import Flask, jsonify, render_template
-from flask_sqlalchemy import SQLAlchemy
-
-from flask import Flask, jsonify, render_template, request, flash, redirect
-# app = Flask(__name__)
-
-# -*- coding: utf-8 -*-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-df = pd.read_csv("LatandLng.csv")
-
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
-app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
-
-    html.Div(children='''
-        Dash: A web application framework for Python.
-    '''),
-
-    dcc.Graph(
-        id='example-graph',
-        figure={
-            'data': [
-                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
-            ],
-            'layout': {
-                'title': 'Dash Data Visualization'
-            }
-        }
-    )
-])
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
+import dash_table
+import plotly.graph_objs as pg
 
 
-
-#################################################
-# Database Setup
-#################################################
-
-# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/bellybutton.sqlite"
-# db = SQLAlchemy(app)
-
-# # reflect an existing database into a new model
-# Base = automap_base()
-# # reflect the tables
-# Base.prepare(db.engine, reflect=True)
-
-# # Save references to each table
-# Samples_Metadata = Base.classes.sample_metadata
-# Samples = Base.classes.samples
-
-
-# @app.route("/")
-# def index():
-#     """Return the homepage."""
-#     return render_template("index.html")
-
-
-# @app.route("/names")
-# def names():
-#     """Return a list of sample names."""
-
-#     # Use Pandas to perform the sql query
-#     stmt = db.session.query(Samples).statement
-#     df = pd.read_sql_query(stmt, db.session.bind)
-
-#     # Return a list of the column names (sample names)
-#     return jsonify(list(df.columns)[2:])
-
-
-# @app.route("/metadata/<sample>")
-# def sample_metadata(sample):
-#     """Return the MetaData for a given sample."""
-#     sel = [
-#         Samples_Metadata.sample,
-#         Samples_Metadata.ETHNICITY,
-#         Samples_Metadata.GENDER,
-#         Samples_Metadata.AGE,
-#         Samples_Metadata.LOCATION,
-#         Samples_Metadata.BBTYPE,
-#         Samples_Metadata.WFREQ,
-#     ]
-
-#     results = db.session.query(*sel).filter(Samples_Metadata.sample == sample).all()
-
-    # # Create a dictionary entry for each row of metadata information
-    # sample_metadata = {}
-    # for result in results:
-    #     sample_metadata["sample"] = result[0]
-    #     sample_metadata["ETHNICITY"] = result[1]
-    #     sample_metadata["GENDER"] = result[2]
-    #     sample_metadata["AGE"] = result[3]
-    #     sample_metadata["LOCATION"] = result[4]
-    #     sample_metadata["BBTYPE"] = result[5]
-    #     sample_metadata["WFREQ"] = result[6]
-
-    # print(sample_metadata)
-    # return jsonify(sample_metadata)
-
-
-# @app.route("/samples/<sample>")
-# def samples(sample):
-#     """Return `otu_ids`, `otu_labels`,and `sample_values`."""
-#     stmt = db.session.query(Samples).statement
-#     df = pd.read_sql_query(stmt, db.session.bind)
-
-#     # Filter the data based on the sample number and
-#     # only keep rows with values above 1
-#     sample_data = df.loc[df[sample] > 1, ["otu_id", "otu_label", sample]]
-#     # Format the data to send as json
-#     data = {
-#         "otu_ids": sample_data.otu_id.values.tolist(),
-#         "sample_values": sample_data[sample].values.tolist(),
-#         "otu_labels": sample_data.otu_label.tolist(),
-#     }
-#     return jsonify(data)
+parser = argparse.ArgumentParser()
+parser.add_argument("input")
+args = parser.parse_args()
+data = pd.read_excel(args.input, index_col=0)
+app = dash.Dash()
+app.layout = html.Div(
+    children=[
+        dcc.Tabs(
+            id="tabs",
+            children=[
+                dcc.Tab(
+                    label="Map",
+                    children=[
+                        dcc.Graph(
+                            id="map",
+                            figure=pg.Figure(
+                                [
+                                    pg.Scattergeo(
+                                        locationmode="USA-states",
+                                        lon=data["lgn"],
+                                        lat=data["lat"],
+                                        text=(
+                                            "Region name: " + data["region_name"]
+                                            + "<br>Principal amount: " + data["principal_amount"].astype(str)
+                                            + "<br>Auction location: " + data["auction_location"].astype(str)
+                                            + "<br>Date of auction: " + data["date_of_auction"].astype(str)
+                                            + "<br>Auction time: " + data["auction_time"].astype(str)
+                                            + "<br>Deposit: " + data["deposit"].astype(str)
+                                            + "<br>Z street address: " + data["zstreet_address"].astype(str)
+                                        ),
+                                        hoverinfo="text",
+                                        mode="markers"
+                                    )
+                                ],
+                                pg.Layout(
+                                    geo=dict(
+                                        scope="usa",
+                                        center=dict(
+                                            lat=data["lat"].mean(), lon=data["lgn"].mean()
+                                        ),
+                                    )
+                                )
+                            )
+                        )
+                    ]
+                ),
+                dcc.Tab(
+                    label="Table",
+                    children=[
+                        dash_table.DataTable(
+                            id="table",
+                            columns=[
+                                {"name": col, "id": col, "deletable": False}
+                                for col in data.columns
+                            ],
+                            data=(
+                                data
+                                    .astype({"date_of_auction": str})
+                                    .to_dict("rows")
+                            ),
+                            sorting=True,
+                            sorting_type="multi"
+                        )
+                    ]
+                )
+            ]
+        )
+        # dcc.Graph(
+        #     figure=pg.Figure(
+        #         [
+        #             pg.Scattergeo(
+        #                 locationmode="USA-states",
+        #                 lon=data["lgn"],
+        #                 lat=data["lat"],
+        #                 text=(
+        #                     "Region name: " + data["region_name"]
+        #                     + "<br>Principal amount: " + data["principal_amount"].astype(str)
+        #                     + "<br>Auction location: " + data["auction_location"].astype(str)
+        #                     + "<br>Date of auction: " + data["date_of_auction"].astype(str)
+        #                     + "<br>Auction time: " + data["auction_time"].astype(str)
+        #                     + "<br>Deposit: " + data["deposit"].astype(str)
+        #                     + "<br>Z street address: " + data["zstreet_address"].astype(str)
+        #                 ),
+        #                 hoverinfo="text",
+        #                 mode="markers"
+        #             )
+        #         ],
+        #         pg.Layout(
+        #             geo=dict(
+        #                 scope="usa",
+        #                 center=dict(
+        #                     lat=data["lat"].mean(), lon=data["lgn"].mean()
+        #                 ),
+        #             )
+        #         )
+        #     )
+        # ),
+        # dash_table.DataTable(
+        #     columns=[
+        #         {"name": col, "id": col, "deletable": False}
+        #         for col in data.columns
+        #     ],
+        #     data=(
+        #         data
+        #             .astype({"date_of_auction": str})
+        #             .to_dict("rows")
+        #     ),
+        #     sorting=True,
+        #     sorting_type="multi"
+        # )
+    ]
+)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run_server()
