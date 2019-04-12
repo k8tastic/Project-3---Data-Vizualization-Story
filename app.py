@@ -81,7 +81,7 @@ def foreclosure_data():
 
     # Return a list of the column names (sample names)
 
-    data_df = pd.read_sql("SELECT * FROM foreclosure_data", conn)
+    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
 
 
     # OPTION 1 -- return json
