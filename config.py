@@ -14,17 +14,9 @@ remote_dbname = 'foreclosurefools'
 remote_dbuser = 'root'
 remote_dbpwd = 'maryland9'
 
-remote_gwsis_dbname = 'gwsis'
-remote_gwsis_dbuser = 'root'
-remote_gwsis_dbpwd = 
-
-# local Database Info
-local_gwsis_dbname = 'gwsis'
-local_gwsis_dbuser = 'root'
-local_gwsis_dbpwd = '
 
 # Salesforce 
-sf_grant_type = 
+# sf_grant_type = 
 sf_client_id = 'andrewjgrimaldi@aol.com' # Consumer Key
 sf_client_secret = '' # Consumer Secret
 sf_username = '' # The email you use to login

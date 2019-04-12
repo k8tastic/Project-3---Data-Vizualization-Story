@@ -9,24 +9,35 @@ import os
 import pandas as pd
 import numpy as np
 
-import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
+#import sqlalchemy
+#from sqlalchemy.ext.automap import automap_base
+#from sqlalchemy.orm import Session
+#from sqlalchemy import create_engine
 
 # from flask import Flask, jsonify, render_template
-from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import SQLAlchemy
+
+from sqlalchemy import create_engine
+import pymysql
+pymysql.install_as_MySQLdb()
+
+from config import remote_db_endpoint, remote_db_port, remote_dbname, remote_dbuser, remote_dbpwd
 
 from flask import Flask, jsonify, render_template, request, flash, redirect
 app = Flask(__name__)
-
 
 #################################################
 # Database Setup
 #################################################
 
+# AWS Database Connection
+engine = create_engine(f"mysql://{remote_dbuser}:{remote_dbpwd}@{remote_db_endpoint}:{remote_db_port}/{remote_dbname}")
+
+# Create a remote database engine connection
+conn = engine.connect()
+
 # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/bellybutton.sqlite"
-db = pd.read_csv("LatandLng2.csv")
+# db = pd.read_csv("LatandLng2.csv")
 
 # reflect an existing database into a new model
 # Base = automap_base()
@@ -61,6 +72,34 @@ def names():
     print(names)
     return jsonify(names)
 
+@app.route("/foreclosure_data")
+def foreclosure_data():
+    """Return foreclosure list."""
+    
+
+    # # Use Pandas to perform the sql query
+    # stmt = db.session.query(Samples).statement
+    # df = pd.read_sql_query(stmt, db.session.bind)
+
+
+    # Return a list of the column names (sample names)
+
+    data_df = pd.read_sql("SELECT * FROM foreclosure_data", conn)
+
+
+    # OPTION 1 -- return json
+    data_json = data_df.to_json()
+    return data_json
+
+    # OPTION 2 -- return json records; list of dicts
+    #data_json = data_df.to_json(orient='records')
+    #return data_json
+
+    # OPTION 3 -- jsonify dictionary
+    #data_dict = data_df.to_dict()
+    #return jsonify(data_dict)
+    # WARNING: This approach contains the keys. If you want to get only the values, use
+    # Object.values() in your JS file
 
 # @app.route("/metadata/<sample>")
 # def sample_metadata(sample):
