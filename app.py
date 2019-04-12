@@ -17,7 +17,7 @@ from sqlalchemy import create_engine
 # from flask import Flask, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 
-from flask import Flask, jsonify, render_template, request, flash, redirect
+from flask import Flask, jsonify, render_template, request, flash, redirect, json
 app = Flask(__name__)
 
 
@@ -37,7 +37,6 @@ db = pd.read_csv("LatandLng2.csv")
 # Samples_Metadata = Base.classes.sample_metadata
 # Samples = Base.classes.samples
 
-
 @app.route("/")
 def index():
     """Return the homepage."""
@@ -48,16 +47,12 @@ def index():
 def names():
     """Return foreclosure list."""
     
-
     # # Use Pandas to perform the sql query
     # stmt = db.session.query(Samples).statement
     # df = pd.read_sql_query(stmt, db.session.bind)
-
-
     # Return a list of the column names (sample names)
 
-
-    names = db.to_json(orient='records')
+    names = pd.DataFrame(db).to_dict('records')
     print(names)
     return jsonify(names)
 
