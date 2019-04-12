@@ -62,8 +62,10 @@ def names():
     # stmt = db.session.query(Samples).statement
     # df = pd.read_sql_query(stmt, db.session.bind)
     # Return a list of the column names (sample names)
-
-    names = pd.DataFrame(db).to_dict('records')
+    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+    
+    names = data_df.to_dict('records')
+    
     print(names)
     return jsonify(names)
 
