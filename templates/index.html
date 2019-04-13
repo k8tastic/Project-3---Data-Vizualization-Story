@@ -29,6 +29,37 @@
       crossorigin=""
     ></script>
 
+    <script>
+        function includeHTML() {
+          var z, i, elmnt, file, xhttp;
+          /*loop through a collection of all HTML elements:*/
+          z = document.getElementsByTagName("*");
+          for (i = 0; i < z.length; i++) {
+            elmnt = z[i];
+            /*search for elements with a certain atrribute:*/
+            file = elmnt.getAttribute("w3-include-html");
+            if (file) {
+              /*make an HTTP request using the attribute value as the file name:*/
+              xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                  if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+                  if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+                  /*remove the attribute, and call this function once more:*/
+                  elmnt.removeAttribute("w3-include-html");
+                  includeHTML();
+                }
+              }      
+              xhttp.open("GET", file, true);
+              xhttp.send();
+              /*exit the function:*/
+              return;
+            }
+          }
+        };
+        </script>
+
+
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="./static/css/style.css" />
 
@@ -39,22 +70,8 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12 jumbotron text-center">
-        <h1>DMV Foreclosures Notices</h1>
-     
-        <h3 style="text-align: left;"><strong>DMV Foreclosure Notices delivers foreclosure notices to you as soon as they are made public in the newspapers.&nbsp; Get amazing deals well before they hit the MLS.</strong></h3>
-        <p style="text-align: left;">As you know, perfect timing &ndash; not just "location, location, location" &ndash; is critical when it comes to purchasing a new home and/or investment property at the right (lowest possible) price. That's because competition drives prices up. At DMV Foreclosure Notices, we target low-priced foreclosures in the DC, Maryland, and Virginia area &ndash; and pass that information (and huge savings) onto smart investors and homebuyers (that's you!).</p>
-        <h3 style="text-align: left;"><strong>It's so simple to find the best foreclosure real estate deals in the DMV area with DMVForeclosureSales.com: It's one easy search!</strong></h3>
-        <p style="text-align: left;">And that search can be performed at the state, county and city levels &ndash; so that your house hunt hits the ground running. Once you start digging into the incredible foreclosure deals, each listing will be complete with estimated equity, exact location, number of beds / baths, neighborhood details and so much more. Indeed, we provide some really great information we know you will be able to find amazing deals we offer a 10 day money back guarantee.</p>
-        <h3 style="text-align: left;"><strong>DMVForeclosureNotices.com updates its amazing database of foreclosure listings at least once EACH DAY!</strong></h3>
-        <p style="text-align: left;">Not weekly or monthly like other sites out there. This ensures that we offer prospective homebuyers and investors with the freshest, hottest deals on the Internet. In fact, most of our information comes direct off the press from online newspapers.&nbsp;</p>
-        <p>&nbsp;</p>
-       
+        <h1>DMV Foreclosures</h1>
         <p>Use the filters to sort through the foreclosure data</p>
-
-
-
-
-
       </div>
     </div>
      <!-- First Row with filter and map -->
@@ -91,10 +108,12 @@
 
     <!-- Third Row with table -->
     <div class="row">
-      <div class="col-md-12">
+      <!--div class="col-md-12">
         <div id="table"></div>
-      </div>
+      </div-->
+      <div w3-include-html="table.html"></div>
     </div>
+    
 
   <!-- <script src="https://cdn.plot.ly/plotly-1.31.2.min.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
@@ -107,10 +126,14 @@
   <script src="{{ url_for('static', filename='js/logic.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
   
+  
   <!-- <script type="text/javascript" src="../static/js/app.js"></script>
     <script type="text/javascript" src="./static/js/config.js"></script>
     <script type="text/javascript" src="./static/js/logic.js"></script> -->
 
+    <script>
+        includeHTML();
+        </script>
 </body>
 
 </html>
