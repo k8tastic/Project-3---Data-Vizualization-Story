@@ -3,7 +3,6 @@
 # This is our Flask App.
 #################################################
 
-
 from flask import Flask, jsonify, render_template, request, flash, redirect, json
 from config import remote_db_endpoint, remote_db_port, remote_dbname, remote_dbuser, remote_dbpwd
 import os
@@ -15,26 +14,23 @@ from sqlalchemy import create_engine
 import pymysql
 pymysql.install_as_MySQLdb()
 
-
 app = Flask(__name__)
 
 #################################################
 # Database Setup
 #################################################
-
 # AWS Database Connection
+
 engine = create_engine(
     f"mysql://{remote_dbuser}:{remote_dbpwd}@{remote_db_endpoint}:{remote_db_port}/{remote_dbname}")
 
 # Create a remote database engine connection
 conn = engine.connect()
 
-
 @app.route("/")
 def index():
     """Return the homepage."""
     return render_template("index.html")
-
 
 @app.route("/names")
 def names():
@@ -74,7 +70,6 @@ def foreclosure_data():
     # WARNING: This approach contains the keys. If you want to get only the values, use
     # Object.values() in your JS file
 
-
 @app.route("/table.html")
 def table():
     """Return foreclosure list."""
@@ -86,7 +81,6 @@ def table():
 
     columnNames = table_df.columns.values
     return render_template('table.html', records=names, colnames=columnNames)
-
 
 @app.route("/graph.html")
 def graph():
@@ -105,10 +99,6 @@ def graph():
     graph = pd.DataFrame(graph_data).to_dict('records')
     data = {'graph': graph}
     return render_template("graph.html", data=data)
-
-
-    
-
 
 
 @app.route("/graphdata")
@@ -130,6 +120,19 @@ def graphdata():
     # return graph.to_json(orient="records")
     return jsonify(graph)
 
+@app.route("/map")
+def map():
+    """Return foreclosure map view."""
+    # # Use Pandas to perform the sql query
+    # stmt = db.session.query(Samples).statement
+    # df = pd.read_sql_query(stmt, db.session.bind)
+    # Return a list of the column names (sample names)
+
+    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+
+    # OPTION 1 -- return json
+    data_json = data_df.to_json()
+    return data_json
 
 
 if __name__ == "__main__":
