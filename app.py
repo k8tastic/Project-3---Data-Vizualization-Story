@@ -21,11 +21,11 @@ app = Flask(__name__)
 #################################################
 # AWS Database Connection
 
-# # engine = create_engine(
-# #     f"mysql://{remote_dbuser}:{remote_dbpwd}@{remote_db_endpoint}:{remote_db_port}/{remote_dbname}")
+engine = create_engine(
+    f"mysql://{remote_dbuser}:{remote_dbpwd}@{remote_db_endpoint}:{remote_db_port}/{remote_dbname}")
 
 # # # Create a remote database engine connection
-# conn = engine.connect()
+conn = engine.connect()
 
 @app.route("/")
 def index():
@@ -57,11 +57,11 @@ def foreclosure_data():
 
     # Return a list of the column names (sample names)
 
-    # data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
 
-    # # OPTION 1 -- return json
-    # data_json = data_df.to_json()
-    # return data_json
+    # OPTION 1 -- return json
+    data_json = data_df.to_json()
+    return data_json
 
     # OPTION 2 -- return json records; list of dicts
     #data_json = data_df.to_json(orient='records')
@@ -74,9 +74,9 @@ def foreclosure_data():
     # Object.values() in your JS file
  
     ## option 4 - import from csv
-    data_df = pd.read_csv("foreclosure_data_4-12.csv")
-    print(data_df.shape)
-    return data_df
+    # data_df = pd.read_csv("foreclosure_data_4-12.csv")
+    # data_json = data_df.to_json()
+    # return data_json
 
 
 @app.route("/table.html")
@@ -140,8 +140,11 @@ def map():
     # data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
 
     # # OPTION 1 -- return json
+    # data_df = pd.read_csv("foreclosure_data_4-12.csv")
     # data_json = data_df.to_json()
     # return data_json
+
+    return render_template("map.html")
 
 
 if __name__ == "__main__":
