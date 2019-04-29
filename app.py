@@ -19,32 +19,14 @@ app = Flask(__name__)
 #################################################
 # FINAL PROJECT - Put code we are keeping HERE
 #################################################
-<<<<<<< HEAD
-=======
-# AWS Database Connection
-
-# # engine = create_engine(
-# #     f"mysql://{remote_dbuser}:{remote_dbpwd}@{remote_db_endpoint}:{remote_db_port}/{remote_dbname}")
-
-# # # Create a remote database engine connection
-# conn = engine.connect()
->>>>>>> 899fffb7a70096021d52b53ebe5de1c1b70c9077
 
 @app.route("/")
 def index():
     """Return the homepage."""
     return render_template("index.html")
 
-<<<<<<< HEAD
 @app.route("/addresses")
 def addresss():
-=======
-
-
-
-@app.route("/names")
-def names():
->>>>>>> 899fffb7a70096021d52b53ebe5de1c1b70c9077
     """Return foreclosure list."""
 
     db = pd.read_csv("foreclosure_data_4-12v2.csv")
@@ -74,35 +56,13 @@ if __name__ == "__main__":
 # def names():
 #     """Return foreclosure list."""
 
-<<<<<<< HEAD
 #     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
 
 #     names = data_df.to_dict('records')
-=======
-    # data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
-
-    # # OPTION 1 -- return json
-    # data_json = data_df.to_json()
-    # return data_json
->>>>>>> 899fffb7a70096021d52b53ebe5de1c1b70c9077
 
 #     print(names)
 #     return jsonify(names)
 
-<<<<<<< HEAD
-=======
-    # OPTION 3 -- jsonify dictionary
-    #data_dict = data_df.to_dict()
-    # return jsonify(data_dict)
-    # WARNING: This approach contains the keys. If you want to get only the values, use
-    # Object.values() in your JS file
- 
-    ## option 4 - import from csv
-    data_df = pd.read_csv("foreclosure_data_4-12.csv")
-    print(data_df.shape)
-    return data_df
-
->>>>>>> 899fffb7a70096021d52b53ebe5de1c1b70c9077
 
 # @app.route("/foreclosure_data")
 # def foreclosure_data():
@@ -130,7 +90,6 @@ if __name__ == "__main__":
 #     # WARNING: This approach contains the keys. If you want to get only the values, use
 #     # Object.values() in your JS file
 
-<<<<<<< HEAD
 
 # @app.route("/table.html")
 # def table():
@@ -196,12 +155,5 @@ if __name__ == "__main__":
 #     # OPTION 1 -- return json
 #     data_json = data_df.to_json()
 #     return data_json
-=======
-    # data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
-
-    # # OPTION 1 -- return json
-    # data_json = data_df.to_json()
-    # return data_json
->>>>>>> 899fffb7a70096021d52b53ebe5de1c1b70c9077
 
 
