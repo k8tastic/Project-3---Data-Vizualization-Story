@@ -1,131 +1,191 @@
-// Weekly earthquake data from USGS
-var url =
-  'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson';
-
-// Send the data.features object to the createFeatures function
-d3.json(url, function (data) {
-  createFeatures(data.features);
-  console.log(data.features);
+// Creating map object
+var myMap = L.map("map", {
+  center: [38.88, -77.11],
+  zoom: 11
 });
 
-function createFeatures(earthquakeData) {
+var circle = L.circle([38.80462,-77.04535], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
 
-  // Define a function we want to run once for each feature in the features array
-  // Add popup with magnitude, place, and date/time
-  function onEachFeature(feature, layer) {
-    layer.bindPopup(
-      '<h2>' + 'Magnitude: ' + feature.properties.mag +
-      '</h2><hr><b><h3>' + feature.properties.place +
-      '</h3><h3>' + new Date(feature.properties.time) + '</h3>'
-    );
+var circle1 = L.circle([38.75131,-77.47908], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+
+var circle2 = L.circle([38.81627,-76.75117], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+var circle3 = L.circle([38.84343,-77.3088], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+var circle4 = L.circle([38.96052,-77.08489], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+
+var circle5 = L.circle([38.95931,-77.08444], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+var circle6 = L.circle([38.751308,-77.47908], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+var circle7 = L.circle([38.20099,-77.58743], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+
+var circle8 = L.circle([39.1158,-77.5631], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+
+var circle9 = L.circle([51.508, -0.11], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+var circle10 = L.circle([38.42276,-77.40869], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+var circle11 = L.circle([38.88987,-77.08319], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+var circle12 = L.circle([38.91042,-76.98622], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+
+var circle13 = L.circle([38.5299,-76.97846], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+var circle14 = L.circle([38.94946,-77.08073], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+
+var circle15 = L.circle([39.08351,-77.15099], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+
+var circle16 = L.circle([38.5299,-76.978462], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+
+var circle17 = L.circle([39.12132,-77.23799], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+var circle18 = L.circle([38.94588,-77.0978], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 50
+}).addTo(myMap);
+
+
+// Adding tile layer to the map
+L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+  maxZoom: 18,
+  id: "mapbox.streets",
+  accessToken: API_KEY
+}).addTo(myMap);
+
+// Store API query variables
+var baseURL = "https://data.cityofnewyork.us/resource/fhrw-4uyv.json?";
+var date = "$where=created_date between'2016-01-10T12:00:00' and '2017-01-01T14:00:00'";
+var complaint = "&complaint_type=Rodent";
+var limit = "&$limit=10000";
+
+// Assemble API query URL
+var url = baseURL + date + complaint + limit;
+
+// Grab the data with d3
+d3.json(url, function(response) {
+
+  // Create a new marker cluster group
+  var markers = L.markerClusterGroup();
+
+  // Loop through data
+  for (var i = 0; i < response.length; i++) {
+
+    // Set the data location property to a variable
+    var location = response[i].location;
+
+    // Check for location property
+    if (location) {
+
+      // Add a new marker to the cluster group and bind a pop-up
+      markers.addLayer(L.marker([location.coordinates[1], location.coordinates[0]])
+        .bindPopup(response[i].descriptor + "<hr>" + response[i].cross_street_1 + "<br>" + response[i].cross_street_2));
+    }
+
   }
 
-  function getColor(magnitude) {
-    return magnitude > 5 ? 'Red' :
-      magnitude > 4 ? 'Orange' :
-      magnitude > 3 ? 'Yellow' :
-      magnitude > 2 ? 'Green' :
-      magnitude > 1 ? 'Blue' :
-      'White';
-  }
+  // Add our marker cluster layer to the map
+  myMap.addLayer(markers);
 
-  // Create a GeoJSON layer containing the features array on the earthquakeData object
-  // Run the onEachFeature function once for each piece of data in the array
-  var earthquakes = L.geoJSON(earthquakeData, {
-    onEachFeature: onEachFeature,
-    pointToLayer: function (feature, layer) {
-
-      return L.circleMarker(layer, {
-        radius: feature.properties.mag * 2.7,
-        fillColor: getColor(feature.properties.mag),
-        color: "black",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.75
-      });
-    }
-  });
-
-  // Sending our earthquakes layer to the createMap function
-  createMap(earthquakes);
-}
-
-function createMap(earthquakes) {
-
-  // Define variables for our tile layers
-  var lightmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 18,
-    minZoom: 2,
-    id: "mapbox.light",
-    accessToken: API_KEY,
-    noWrap: true
-  });
-
-  var outdoorsmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 22,
-    minZoom: 1,
-    id: "mapbox.outdoors",
-    accessToken: API_KEY,
-    noWrap: true
-  });
-
-  var satellitemap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 22,
-    minZoom: 1,
-    id: "mapbox.satellite",
-    accessToken: API_KEY,
-    noWrap: true
-  });
-
-  // Only one base layer can be shown at a time
-  var baseMaps = {
-    Outdoors: outdoorsmap,
-    Light: lightmap,
-    Satellite: satellitemap
-  };
-
-  // Create overlay object to hold our overlay layer
-  var overlayMaps = {
-    Earthquakes: earthquakes
-  };
-
-  // Create our map with layers to display on load
-  var myMap = L.map('map', {
-    center: [37.09, 0],
-    zoom: 3,
-    layers: [outdoorsmap, earthquakes]
-  });
-
-  // Create layer control
-  L.control
-    .layers(baseMaps, overlayMaps, {
-      collapsed: false
-    })
-    .addTo(myMap);
-
-  // Create legend for the mag colors
-
-////////////THIS DOESNT WORK//////////////
-  var legend = L.control({position: 'bottomright'});
-
-legend.onAdd = function (map) {
-
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 1, 2, 3, 4, 5]
-        labels = [];
-
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
-
-    return div;
-};
-
-// legend.addTo(map);
-}
+});
