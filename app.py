@@ -10,25 +10,25 @@ import os
 import pandas as pd
 import numpy as np
 
-# from sqlalchemy import create_engine
-# import pymysql
-# pymysql.install_as_MySQLdb()
+from sqlalchemy import create_engine
+import pymysql
+pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 
 #################################################
 # FINAL PROJECT - Put code we are keeping HERE
-#################################################
-<<<<<<< HEAD
-# AWS Database Connection
+# #################################################
+# <<<<<<< HEAD
+# # AWS Database Connection
 
 engine = create_engine(
     f"mysql://{remote_dbuser}:{remote_dbpwd}@{remote_db_endpoint}:{remote_db_port}/{remote_dbname}")
 
 # # # Create a remote database engine connection
 conn = engine.connect()
-=======
->>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
+# =======
+# >>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
 
 @app.route("/")
 def index():
@@ -39,17 +39,35 @@ def index():
 def addresss():
     """Return foreclosure list."""
 
-    db = pd.read_csv("foreclosure_data_4-12v2.csv")
-    addresses = pd.DataFrame(db).to_dict('records')
-    print(addresses)
-    return jsonify(addresses)
+@app.route("/names")
+def names():
+    """Return foreclosure list."""
 
-@app.route("/table")
-def table():
-    return render_template("table2.html")
+    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    names = data_df.to_dict('records')
+
+    print(names)
+    return jsonify(names)
+
+@app.route("/foreclosure_data")
+def foreclosure_data():
+    """Return foreclosure list."""
+
+    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+
+
+#     db = pd.read_csv("foreclosure_data_4-12v2.csv")
+#     addresses = pd.DataFrame(db).to_dict('records')
+#     print(addresses)
+#     return jsonify(addresses)
+
+# @app.route("/table")
+# def table():
+#     return render_template("table2.html")
+
+# if __name__ == "__main__":
+#     app.run(debug=True)
 
 #################################################
 # Database Setup (commented out because of AWS error)
@@ -73,25 +91,25 @@ if __name__ == "__main__":
 #     print(names)
 #     return jsonify(names)
 
-<<<<<<< HEAD
-    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+# <<<<<<< HEAD
+#     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
 
-    # OPTION 1 -- return json
+#     # OPTION 1 -- return json
     data_json = data_df.to_json()
     return data_json
-=======
+# =======
 
-# @app.route("/foreclosure_data")
-# def foreclosure_data():
-#     """Return foreclosure list."""
->>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
+# # @app.route("/foreclosure_data")
+# # def foreclosure_data():
+# #     """Return foreclosure list."""
+# >>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
 
 #     # # Use Pandas to perform the sql query
 #     # stmt = db.session.query(Samples).statement
 #     # df = pd.read_sql_query(stmt, db.session.bind)
 
-<<<<<<< HEAD
-    # OPTION 3 -- jsonify dictionary
+# <<<<<<< HEAD
+#     # OPTION 3 -- jsonify dictionary
     #data_dict = data_df.to_dict()
     # return jsonify(data_dict)
     # WARNING: This approach contains the keys. If you want to get only the values, use
@@ -103,7 +121,7 @@ if __name__ == "__main__":
     # return data_json
 =======
 #     # Return a list of the column names (sample names)
->>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
+# >>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
 
 #     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
 
@@ -135,12 +153,12 @@ if __name__ == "__main__":
 #     return render_template('table.html', records=names, colnames=columnNames)
 
 
-<<<<<<< HEAD
-    # # OPTION 1 -- return json
-    # data_df = pd.read_csv("foreclosure_data_4-12.csv")
-    # data_json = data_df.to_json()
-    # return data_json
-=======
+# <<<<<<< HEAD
+#     # # OPTION 1 -- return json
+#     # data_df = pd.read_csv("foreclosure_data_4-12.csv")
+#     # data_json = data_df.to_json()
+#     # return data_json
+# =======
 # @app.route("/graph.html")
 # def graph():
 #     """Return foreclosure list."""
@@ -191,8 +209,8 @@ if __name__ == "__main__":
 
 #     # OPTION 1 -- return json
 #     data_json = data_df.to_json()
-#     return data_json
->>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
+# #     return data_json
+# >>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
 
     return render_template("map.html")
 
