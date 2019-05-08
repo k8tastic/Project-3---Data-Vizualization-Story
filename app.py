@@ -17,27 +17,20 @@ pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 
 #################################################
-# FINAL PROJECT - Put code we are keeping HERE
-# #################################################
-# <<<<<<< HEAD
-# # AWS Database Connection
+# Database Setup
+#################################################
+# AWS Database Connection
 
 engine = create_engine(
     f"mysql://{remote_dbuser}:{remote_dbpwd}@{remote_db_endpoint}:{remote_db_port}/{remote_dbname}")
 
 # # # Create a remote database engine connection
 conn = engine.connect()
-# =======
-# >>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
 
 @app.route("/")
 def index():
     """Return the homepage."""
     return render_template("index.html")
-
-@app.route("/addresses")
-def addresss():
-    """Return foreclosure list."""
 
 @app.route("/names")
 def names():
@@ -50,66 +43,28 @@ def names():
     print(names)
     return jsonify(names)
 
+
 @app.route("/foreclosure_data")
 def foreclosure_data():
     """Return foreclosure list."""
 
+    # # Use Pandas to perform the sql query
+    # stmt = db.session.query(Samples).statement
+    # df = pd.read_sql_query(stmt, db.session.bind)
+
+    # Return a list of the column names (sample names)
+
     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
 
-
-#     db = pd.read_csv("foreclosure_data_4-12v2.csv")
-#     addresses = pd.DataFrame(db).to_dict('records')
-#     print(addresses)
-#     return jsonify(addresses)
-
-# @app.route("/table")
-# def table():
-#     return render_template("table2.html")
-
-# if __name__ == "__main__":
-#     app.run(debug=True)
-
-#################################################
-# Database Setup (commented out because of AWS error)
-#################################################
-
-# # AWS Database Connection
-# engine = create_engine(
-#     f"mysql://{remote_dbuser}:{remote_dbpwd}@{remote_db_endpoint}:{remote_db_port}/{remote_dbname}")
-
-# # Create a remote database engine connection
-# conn = engine.connect()
-
-# @app.route("/names")
-# def names():
-#     """Return foreclosure list."""
-
-#     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
-
-#     names = data_df.to_dict('records')
-
-#     print(names)
-#     return jsonify(names)
-
-# <<<<<<< HEAD
-#     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
-
-#     # OPTION 1 -- return json
+    # OPTION 1 -- return json
     data_json = data_df.to_json()
     return data_json
-# =======
 
-# # @app.route("/foreclosure_data")
-# # def foreclosure_data():
-# #     """Return foreclosure list."""
-# >>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
+    # OPTION 2 -- return json records; list of dicts
+    #data_json = data_df.to_json(orient='records')
+    # return data_json
 
-#     # # Use Pandas to perform the sql query
-#     # stmt = db.session.query(Samples).statement
-#     # df = pd.read_sql_query(stmt, db.session.bind)
-
-# <<<<<<< HEAD
-#     # OPTION 3 -- jsonify dictionary
+    # OPTION 3 -- jsonify dictionary
     #data_dict = data_df.to_dict()
     # return jsonify(data_dict)
     # WARNING: This approach contains the keys. If you want to get only the values, use
@@ -119,99 +74,75 @@ def foreclosure_data():
     # data_df = pd.read_csv("foreclosure_data_4-12.csv")
     # data_json = data_df.to_json()
     # return data_json
-=======
-#     # Return a list of the column names (sample names)
-# >>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
-
-#     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
-
-#     # OPTION 1 -- return json
-#     data_json = data_df.to_json()
-#     return data_json
-
-#     # OPTION 2 -- return json records; list of dicts
-#     #data_json = data_df.to_json(orient='records')
-#     # return data_json
-
-#     # OPTION 3 -- jsonify dictionary
-#     #data_dict = data_df.to_dict()
-#     # return jsonify(data_dict)
-#     # WARNING: This approach contains the keys. If you want to get only the values, use
-#     # Object.values() in your JS file
 
 
-# @app.route("/table.html")
-# def table():
-#     """Return foreclosure list."""
-#     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
-#     names = data_df.to_dict('records')
+@app.route("/table.html")
+def table():
+    """Return foreclosure list."""
+    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+    names = data_df.to_dict('records')
 
-#     table_df = data_df[["property_address","zestimate","bedrooms","bathrooms","deposit","principal_amount","estimated_equity","date_of_auction","auction_location"]]
-#     # table_df = table_df.rename(columns={"property_address":"Property Address"}, inplace=True)
+    table_df = data_df[["property_address","zestimate","bedrooms","bathrooms","deposit","principal_amount","estimated_equity","date_of_auction","auction_location"]]
+    # table_df = table_df.rename(columns={"property_address":"Property Address"}, inplace=True)
 
-#     columnNames = table_df.columns.values
-#     return render_template('table.html', records=names, colnames=columnNames)
+    columnNames = table_df.columns.values
+    return render_template('table.html', records=names, colnames=columnNames)
 
-
-# <<<<<<< HEAD
-#     # # OPTION 1 -- return json
-#     # data_df = pd.read_csv("foreclosure_data_4-12.csv")
-#     # data_json = data_df.to_json()
-#     # return data_json
-# =======
-# @app.route("/graph.html")
-# def graph():
-#     """Return foreclosure list."""
-
-#     # # Use Pandas to perform the sql query
-#     # stmt = db.session.query(Samples).statement
-#     # df = pd.read_sql_query(stmt, db.session.bind)
-#     # Return a list of the column names (sample names)
-
-#     #graph = pd.DataFrame(db).to_dict('records')
-#     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
-#     graph_data = data_df[["principal_amount","zestimate"]]
-#     #print(graph)
-#     #return graph.to_json(orient="records")
-#     graph = pd.DataFrame(graph_data).to_dict('records')
-#     data = {'graph': graph}
-#     return render_template("graph.html", data=data)
+@app.route("/graph.html")
+def graph():
+    """Return foreclosure list."""
+    
+    # # Use Pandas to perform the sql query
+    # stmt = db.session.query(Samples).statement
+    # df = pd.read_sql_query(stmt, db.session.bind)
+    # Return a list of the column names (sample names)
+    
+    #graph = pd.DataFrame(db).to_dict('records')
+    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+    graph_data = data_df[["principal_amount","zestimate"]]
+    #print(graph)
+    #return graph.to_json(orient="records")
+    graph = pd.DataFrame(graph_data).to_dict('records')
+    data = {'graph': graph}
+    return render_template("graph.html", data=data)
 
 
-# @app.route("/graphdata")
-# def graphdata():
-#     """Return foreclosure list."""
+@app.route("/graphdata")
+def graphdata():
+    """Return foreclosure list."""
+    
+    # # Use Pandas to perform the sql query
+    # stmt = db.session.query(Samples).statement
+    # df = pd.read_sql_query(stmt, db.session.bind)
+    # Return a list of the column names (sample names)
+    
+    #graph = pd.DataFrame(db).to_dict('records')
+    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+    graph_data = data_df[["principal_amount","zestimate"]]
 
-#     # # Use Pandas to perform the sql query
-#     # stmt = db.session.query(Samples).statement
-#     # df = pd.read_sql_query(stmt, db.session.bind)
-#     # Return a list of the column names (sample names)
+    graph = pd.DataFrame(graph_data).to_dict('records')
 
-#     #graph = pd.DataFrame(db).to_dict('records')
-#     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
-#     graph_data = data_df[["principal_amount","zestimate"]]
+    print(graph)
+    # return graph.to_json(orient="records")
+    return jsonify(graph)
 
-#     graph = pd.DataFrame(graph_data).to_dict('records')
+@app.route("/map")
+def map():
+    """Return foreclosure map view."""
+    # # Use Pandas to perform the sql query
+    # stmt = db.session.query(Samples).statement
+    # df = pd.read_sql_query(stmt, db.session.bind)
+    # Return a list of the column names (sample names)
 
-#     print(graph)
-#     # return graph.to_json(orient="records")
-#     return jsonify(graph)
+    # data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
 
-# @app.route("/map")
-# def map():
-#     """Return foreclosure map view."""
-#     # # Use Pandas to perform the sql query
-#     # stmt = db.session.query(Samples).statement
-#     # df = pd.read_sql_query(stmt, db.session.bind)
-#     # Return a list of the column names (sample names)
-
-#     data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
-
-#     # OPTION 1 -- return json
-#     data_json = data_df.to_json()
-# #     return data_json
-# >>>>>>> ab40299329cc8ff51cc921d2c27312400937bcd9
+    # # OPTION 1 -- return json
+    # data_df = pd.read_csv("foreclosure_data_4-12.csv")
+    # data_json = data_df.to_json()
+    # return data_json
 
     return render_template("map.html")
 
 
+if __name__ == "__main__":
+    app.run(debug=True)
