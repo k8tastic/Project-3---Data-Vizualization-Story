@@ -8,11 +8,11 @@ gkey = 'AIzaSyDJVHUu96plcDqAI2Bt64siywZOs7pWZ6w'
 census_api_key = '85ac64b6b5a9c0901b00329d1ef41f0c53ccfc98'
 
 # AWS Database Info
-remote_db_endpoint = 'foreclosurefools.cp6br7grzbbr.us-east-2.rds.amazonaws.com'
+remote_db_endpoint = 'foreclosurefools.chyqd9h8fqhz.us-east-1.rds.amazonaws.com'
 remote_db_port = '3306'
-remote_dbname = 'foreclosurefools'
-remote_dbuser = 'root'
-remote_dbpwd = 'maryland9'
+remote_dbname = 'root'
+remote_dbuser = 'foreclosurefools'
+remote_dbpwd = 'fore4444closuref00ls'
 
 
 # Salesforce 
