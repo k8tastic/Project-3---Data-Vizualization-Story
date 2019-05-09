@@ -11,7 +11,7 @@ pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 
-sql_query = "SELECT * FROM foreclosure_data_test2"
+sql_query = "SELECT * FROM foreclosure_final"
 
 #################################################
 # Database Setup
