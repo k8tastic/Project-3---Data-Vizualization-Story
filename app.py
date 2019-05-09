@@ -16,6 +16,8 @@ pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 
+sql_query = "SELECT * FROM foreclosure_data_test2"
+
 #################################################
 # Database Setup
 #################################################
@@ -36,7 +38,7 @@ def index():
 def names():
     """Return foreclosure list."""
 
-    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+    data_df = pd.read_sql(sql_query, conn)
 
     names = data_df.to_dict('records')
 
@@ -54,7 +56,7 @@ def foreclosure_data():
 
     # Return a list of the column names (sample names)
 
-    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+    data_df = pd.read_sql(sql_query, conn)
 
     # OPTION 1 -- return json
     data_json = data_df.to_json()
@@ -76,16 +78,18 @@ def foreclosure_data():
     # return data_json
 
 
-@app.route("/table.html")
+@app.route("/table")
 def table():
     """Return foreclosure list."""
-    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+    data_df = pd.read_sql(sql_query, conn)
+    print("read data")
     names = data_df.to_dict('records')
 
     table_df = data_df[["property_address","zestimate","bedrooms","bathrooms","deposit","principal_amount","estimated_equity","date_of_auction","auction_location"]]
     # table_df = table_df.rename(columns={"property_address":"Property Address"}, inplace=True)
 
     columnNames = table_df.columns.values
+    print("finished table endpoint")
     return render_template('table.html', records=names, colnames=columnNames)
 
 @app.route("/graph.html")
@@ -140,6 +144,8 @@ def map():
     # data_df = pd.read_csv("foreclosure_data_4-12.csv")
     # data_json = data_df.to_json()
     # return data_json
+
+    print("map endpoint ")
 
     return render_template("map.html")
 
