@@ -1,8 +1,3 @@
-#################################################
-# Hi Project Team!!
-# This is our Flask App.
-#################################################
-
 from flask import Flask, jsonify, render_template, request, flash, redirect, json
 from config import remote_db_endpoint, remote_db_port, remote_dbname, remote_dbuser, remote_dbpwd
 import os
@@ -16,7 +11,7 @@ pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 
-sql_query = "SELECT * FROM foreclosure_data_test2"
+sql_query = "SELECT * FROM foreclosure_final"
 
 #################################################
 # Database Setup
@@ -102,7 +97,7 @@ def graph():
     # Return a list of the column names (sample names)
     
     #graph = pd.DataFrame(db).to_dict('records')
-    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+    data_df = pd.read_sql(sql_query, conn)
     graph_data = data_df[["principal_amount","zestimate"]]
     #print(graph)
     #return graph.to_json(orient="records")
@@ -121,7 +116,7 @@ def graphdata():
     # Return a list of the column names (sample names)
     
     #graph = pd.DataFrame(db).to_dict('records')
-    data_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+    data_df = pd.read_sql(sql_query, conn)
     graph_data = data_df[["principal_amount","zestimate"]]
 
     graph = pd.DataFrame(graph_data).to_dict('records')
