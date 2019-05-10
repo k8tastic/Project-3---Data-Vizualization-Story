@@ -22,7 +22,7 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
-  background: #041c2b;
+  background: #1aa8bb;
 }
 
 /* The wrapper contains all of the page's content besides the footer, which is pushed to the bottom of the page */
@@ -31,11 +31,11 @@ body {
   min-height: 100%;
   /* padding-bottom: 130px; */
   overflow: auto;
-  background: #041c2b;
+  background: #04629c;
 }
 
 .navbar{
-  background: #041c2b;
+  background: #6f1b80;
   font-family: Ubuntu, sans-serif;
   font-size: 20px;
   margin: 10px;
@@ -43,7 +43,7 @@ body {
 
 /* Table properties */
 .table_text{
-  color: #041c2b;
+  color: #1577b4;
   text-align: center;
 }
 
@@ -54,7 +54,7 @@ body {
   bottom: 0;
   left: 0;
   min-height: 100px;
-  background: #041c2b;
+  background: #2c0b85;
   border-top: 5px solid white;
 }
 
