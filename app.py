@@ -11,7 +11,6 @@ pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 
-sql_query = "SELECT * FROM foreclosure_final"
 
 #################################################
 # Database Setup
@@ -22,7 +21,9 @@ engine = create_engine(
     f"mysql://{remote_dbuser}:{remote_dbpwd}@{remote_db_endpoint}:{remote_db_port}/{remote_dbname}")
 
 # # # Create a remote database engine connection
+#conn = engine.connect()
 conn = engine.connect()
+#sql_query = "SELECT zstreet_address, zzip FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1901-01-01' AND '2020-12-31') LIMIT 100"
 
 @app.route("/")
 def index():
@@ -45,25 +46,28 @@ def names():
 def foreclosure_data():
     """Return foreclosure list."""
 
+
+    
     # # Use Pandas to perform the sql query
     # stmt = db.session.query(Samples).statement
     # df = pd.read_sql_query(stmt, db.session.bind)
 
     # Return a list of the column names (sample names)
+    
 
-    data_df = pd.read_sql(sql_query, conn)
+    data_df = pd.read_sql("SELECT * FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1901-01-01' AND '2020-12-31') LIMIT 100", conn)
 
-    # OPTION 1 -- return json
-    data_json = data_df.to_json()
-    return data_json
+    # # OPTION 1 -- return json
+    # data_json = data_df.to_json()
+    # return data_json
 
     # OPTION 2 -- return json records; list of dicts
     #data_json = data_df.to_json(orient='records')
     # return data_json
 
     # OPTION 3 -- jsonify dictionary
-    #data_dict = data_df.to_dict()
-    # return jsonify(data_dict)
+    data_dict = data_df.to_json(orient="records")
+    return data_dict
     # WARNING: This approach contains the keys. If you want to get only the values, use
     # Object.values() in your JS file
  
@@ -73,8 +77,33 @@ def foreclosure_data():
     # return data_json
 
 
+# @app.route("/addresses")
+# def addresss():
+#    """Return foreclosure list."""
+
+#     addr_df = pd.read_sql("SELECT * FROM foreclosure_data_final", conn)
+
+#     addr_df = addr_df.to_dict()
+#     # return data_json
+
+#     return jsonify(addr_df)
+
+@app.route("/addresses")
+def addresss():
+   """Return foreclosure list."""
+
+   db = pd.read_csv("foreclosure_data_4-12v2.csv")
+   addresses = pd.DataFrame(db).to_dict('records')
+   print(addresses)
+   return jsonify(addresses)
+
 @app.route("/table")
 def table():
+   return render_template("table2.html")
+
+
+@app.route("/table_andrew")
+def table_andrew():
     """Return foreclosure list."""
     data_df = pd.read_sql(sql_query, conn)
     print("read data")
