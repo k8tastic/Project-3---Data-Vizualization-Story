@@ -13,7 +13,6 @@ app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 
 
-
 #################################################
 # Database Setup
 #################################################
@@ -27,36 +26,21 @@ engine = create_engine(
 conn = engine.connect()
 #sql_query = "SELECT zstreet_address, zzip FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1901-01-01' AND '2020-12-31') LIMIT 100"
 
-
 @app.route("/")
 def index():
     """Return the homepage."""
     return render_template("index.html")
 
-@app.route("/addresses")
-def addresss():
+@app.route("/names")
+def names():
     """Return foreclosure list."""
 
-    db = pd.read_csv("foreclosure_data_4-12v2.csv")
-    addresses = pd.DataFrame(db).to_dict('records')
-    print(addresses)
-    return jsonify(addresses)
+    data_df = pd.read_sql(sql_query, conn)
 
+    names = data_df.to_dict('records')
 
-@app.route("/table")
-def table():
-    return render_template("table2.html")
-
-# @app.route("/names")
-# def names():
-#     """Return foreclosure list."""
-
-#     data_df = pd.read_sql(sql_query, conn)
-
-#     names = data_df.to_dict('records')
-
-#     print(names)
-#     return jsonify(names)
+    print(names)
+    return jsonify(names)
 
 
 @app.route("/foreclosure_data")
@@ -134,12 +118,12 @@ def table_andrew():
     print("read data")
     names = data_df.to_dict('records')
 
-#     table_df = data_df[["property_address","zestimate","bedrooms","bathrooms","deposit","principal_amount","estimated_equity","date_of_auction","auction_location"]]
-#     # table_df = table_df.rename(columns={"property_address":"Property Address"}, inplace=True)
+    table_df = data_df[["property_address","zestimate","bedrooms","bathrooms","deposit","principal_amount","estimated_equity","date_of_auction","auction_location"]]
+    # table_df = table_df.rename(columns={"property_address":"Property Address"}, inplace=True)
 
-#     columnNames = table_df.columns.values
-#     print("finished table endpoint")
-#     return render_template('table.html', records=names, colnames=columnNames)
+    columnNames = table_df.columns.values
+    print("finished table endpoint")
+    return render_template('table.html', records=names, colnames=columnNames)
 
 @app.route("/graph.html")
 def graph():
@@ -152,9 +136,9 @@ def graph():
 
     #graph = pd.DataFrame(db).to_dict('records')
     data_df = pd.read_sql(sql_query, conn)
-    graph_data = data_df[["principal_amount", "zestimate"]]
-    # print(graph)
-    # return graph.to_json(orient="records")
+    graph_data = data_df[["principal_amount","zestimate"]]
+    #print(graph)
+    #return graph.to_json(orient="records")
     graph = pd.DataFrame(graph_data).to_dict('records')
     data = {'graph': graph}
     return render_template("graph.html", data=data)
@@ -171,14 +155,13 @@ def graphdata():
 
     #graph = pd.DataFrame(db).to_dict('records')
     data_df = pd.read_sql(sql_query, conn)
-    graph_data = data_df[["principal_amount", "zestimate"]]
+    graph_data = data_df[["principal_amount","zestimate"]]
 
     graph = pd.DataFrame(graph_data).to_dict('records')
 
     print(graph)
     # return graph.to_json(orient="records")
     return jsonify(graph)
-
 
 @app.route("/map")
 def map():
