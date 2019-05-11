@@ -4,149 +4,6 @@ var myMap = L.map("map", {
   zoom: 11
 });
 
-console.log("myMap");
-// var circle = L.circle([38.80462,-77.04535], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-// var circle1 = L.circle([38.75131,-77.47908], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-
-// var circle2 = L.circle([38.81627,-76.75117], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-// var circle3 = L.circle([38.84343,-77.3088], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-// var circle4 = L.circle([38.96052,-77.08489], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-
-// var circle5 = L.circle([38.95931,-77.08444], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-// var circle6 = L.circle([38.751308,-77.47908], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-// var circle7 = L.circle([38.20099,-77.58743], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-
-// var circle8 = L.circle([39.1158,-77.5631], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-
-// var circle9 = L.circle([51.508, -0.11], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-// var circle10 = L.circle([38.42276,-77.40869], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-// var circle11 = L.circle([38.88987,-77.08319], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-// var circle12 = L.circle([38.91042,-76.98622], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-
-// var circle13 = L.circle([38.5299,-76.97846], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-// var circle14 = L.circle([38.94946,-77.08073], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-
-// var circle15 = L.circle([39.08351,-77.15099], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-
-// var circle16 = L.circle([38.5299,-76.978462], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-
-// var circle17 = L.circle([39.12132,-77.23799], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-// var circle18 = L.circle([38.94588,-77.0978], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 50
-// }).addTo(myMap);
-
-
 // Adding tile layer to the map
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
@@ -166,70 +23,42 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 //set up to get csv data
 var url = "/foreclosure_data"
-console.log(url)
+//console.log(url)
 
-// Grab the data with d3
-d3.json(url, function(response) {
 
-  console.log(response)
+d3.json(url).then(function(response){
 
-  // Create a new marker cluster group
-  var markers = L.markerClusterGroup();
+    var markers = L.markerClusterGroup();
 
-  console.log(response.lat)
+    console.log(response.length)
 
-  for (var i = 0;; i++) {
-    try {
-      // code that throws the error
-      var latitude = response.lat[i];
-      var longitude = response.lgn[i];
+    for (var i = 0; i < response.length; i++) {
 
-      // L.circle([latitude,longitude], {
-      //   color: 'red',
-      //   fillColor: '#f03',
-      //   fillOpacity: 0.5,
-      //   radius: 50
-      //     }).addTo(myMap);
+      try {
+        // code that throws the error
+        var latitude = response[i].lat;
+        var longitude = response[i].lgn;
 
-    // Add a new marker to the cluster group and bind a pop-up
-      markers.addLayer(L.marker([latitude, longitude])
-        .bindPopup(response.auction_location[i] + "<hr>" + response.auction_time[i] + "<hr>")
-      );
+        // L.circle([latitude,longitude], {
+        //   color: 'red',
+        //   fillColor: '#f03',
+        //   fillOpacity: 0.5,
+        //   radius: 50
+        //     }).addTo(myMap);
 
-    } catch (e) {
-      // exit the loop
-      break; 
+      // Add a new marker to the cluster group and bind a pop-up
+        markers.addLayer(L.marker([latitude, longitude])
+          .bindPopup(response[i].auction_location + "<hr>" + response[i].auction_time + "<hr>" + response[i].city_url + "<hr>" + response[i].auction_date + "<hr>" + response[i].listing_url + "<hr>" + response[i].estimated_equity + "<hr>")
+        );
+
+      } catch (e) {
+        console.log(e);
+        // exit the loop
+        break;
+      }
     }
-  }
 
-  // Loop through data
-  // for (var i = 0; i < 10; i++) {
+    // Add our marker cluster layer to the map
+    myMap.addLayer(markers);
 
-  //   // Set the data location property to a variable
-  //   var latitude = response.lat[i];
-  //   var longitude = response.lgn[i];
-
-  //   console.log(latitude)
-  //   console.log(longitude)
-
-  //   L.circle([latitude,longitude], {
-  // color: 'red',
-  // fillColor: '#f03',
-  // fillOpacity: 0.5,
-  // radius: 50
-  //   }).addTo(myMap);
-
-  //   // // Check for location property
-  //   // if (latitude) {
-
-  //   //   // Add a new marker to the cluster group and bind a pop-up
-  //   //   markers.addLayer(L.marker([longitude, latitude]));
-  //   // //     .bindPopup(response[i].descriptor + "<hr>" + response[i].cross_street_1 + "<br>" + response[i].cross_street_2));
-  //   //  }
-
-  // }
-
-  // Add our marker cluster layer to the map
-  myMap.addLayer(markers);
-
-});
+  });
