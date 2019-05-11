@@ -85,7 +85,7 @@ def table_data():
 
     conn = engine.connect()
 
-    data_df = pd.read_sql("SELECT estimated_equity, date_of_auction, bedrooms, bathrooms, auction_location FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1901-01-01' AND '2020-12-31')", conn)
+    data_df = pd.read_sql("SELECT estimated_equity, date_of_auction, bedrooms, bathrooms, auction_location FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1970-01-01' AND '2020-12-31')", conn)
     data_dict = data_df.to_json(orient="records")
     return data_dict
 
