@@ -47,15 +47,15 @@ def foreclosure_data():
     """Return foreclosure list."""
 
 
-    
+
     # # Use Pandas to perform the sql query
     # stmt = db.session.query(Samples).statement
     # df = pd.read_sql_query(stmt, db.session.bind)
 
     # Return a list of the column names (sample names)
-    
 
-    data_df = pd.read_sql("SELECT * FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1901-01-01' AND '2020-12-31') LIMIT 100", conn)
+
+    data_df = pd.read_sql("SELECT * FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1901-01-01' AND '2020-12-31')", conn)
 
     # # OPTION 1 -- return json
     # data_json = data_df.to_json()
@@ -70,7 +70,7 @@ def foreclosure_data():
     return data_dict
     # WARNING: This approach contains the keys. If you want to get only the values, use
     # Object.values() in your JS file
- 
+
     ## option 4 - import from csv
     # data_df = pd.read_csv("foreclosure_data_4-12.csv")
     # data_json = data_df.to_json()
@@ -119,12 +119,12 @@ def table_andrew():
 @app.route("/graph.html")
 def graph():
     """Return foreclosure list."""
-    
+
     # # Use Pandas to perform the sql query
     # stmt = db.session.query(Samples).statement
     # df = pd.read_sql_query(stmt, db.session.bind)
     # Return a list of the column names (sample names)
-    
+
     #graph = pd.DataFrame(db).to_dict('records')
     data_df = pd.read_sql(sql_query, conn)
     graph_data = data_df[["principal_amount","zestimate"]]
@@ -138,12 +138,12 @@ def graph():
 @app.route("/graphdata")
 def graphdata():
     """Return foreclosure list."""
-    
+
     # # Use Pandas to perform the sql query
     # stmt = db.session.query(Samples).statement
     # df = pd.read_sql_query(stmt, db.session.bind)
     # Return a list of the column names (sample names)
-    
+
     #graph = pd.DataFrame(db).to_dict('records')
     data_df = pd.read_sql(sql_query, conn)
     graph_data = data_df[["principal_amount","zestimate"]]

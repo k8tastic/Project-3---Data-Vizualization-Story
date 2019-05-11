@@ -1,10 +1,13 @@
+
+
 // Creating map object
 var myMap = L.map("map", {
   center: [38.88, -77.11],
   zoom: 11
 });
 
-console.log("myMap");
+/*
+//console.log("myMap");
 var circle = L.circle([38.80462,-77.04535], {
   color: 'red',
   fillColor: '#f03',
@@ -145,7 +148,7 @@ var circle18 = L.circle([38.94588,-77.0978], {
   fillOpacity: 0.5,
   radius: 50
 }).addTo(myMap);
-
+*/
 
 // Adding tile layer to the map
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
@@ -166,70 +169,78 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 //set up to get csv data
 var url = "/foreclosure_data"
-console.log(url)
+//console.log(url)
 
-// Grab the data with d3
-d3.json(url, function(response) {
 
-  console.log(response)
+d3.json(url).then(function(response){
 
-  // Create a new marker cluster group
-  var markers = L.markerClusterGroup();
+    var markers = L.markerClusterGroup();
 
-  console.log(response.lat)
+    console.log(response.length)
 
-  for (var i = 0;; i++) {
-    try {
-      // code that throws the error
-      var latitude = response.lat[i];
-      var longitude = response.lgn[i];
+    for (var i = 0; i < response.length; i++) {
+//      console.log("LAT");
+  //    console.log(response[i].lat);
 
-      // L.circle([latitude,longitude], {
-      //   color: 'red',
-      //   fillColor: '#f03',
-      //   fillOpacity: 0.5,
-      //   radius: 50
-      //     }).addTo(myMap);
+      try {
+        // code that throws the error
+        var latitude = response[i].lat;
+        var longitude = response[i].lgn;
 
-    // Add a new marker to the cluster group and bind a pop-up
-      markers.addLayer(L.marker([latitude, longitude])
-        .bindPopup(response.auction_location[i] + "<hr>" + response.auction_time[i] + "<hr>" + response.city_url[i] + "<hr>" + response.auction_date[i] + "<hr>" + response.listing_url[i] + "<hr>" + response.estimated_equity[i] + "<hr>")
-      );
+        console.log("LAT");
+        console.log(latitude);
+        // L.circle([latitude,longitude], {
+        //   color: 'red',
+        //   fillColor: '#f03',
+        //   fillOpacity: 0.5,
+        //   radius: 50
+        //     }).addTo(myMap);
 
-    } catch (e) {
-      // exit the loop
-      break; 
+      // Add a new marker to the cluster group and bind a pop-up
+        markers.addLayer(L.marker([latitude, longitude])
+          .bindPopup(response[i].auction_location + "<hr>" + response[i].auction_time + "<hr>" + response[i].city_url + "<hr>" + response[i].auction_date + "<hr>" + response[i].listing_url + "<hr>" + response[i].estimated_equity + "<hr>")
+        );
+
+      } catch (e) {
+        console.log(e);
+        // exit the loop
+        break;
+      }
     }
-  }
 
-  // Loop through data
-  // for (var i = 0; i < 10; i++) {
+    // Loop through data
+    // for (var i = 0; i < 10; i++) {
 
-  //   // Set the data location property to a variable
-  //   var latitude = response.lat[i];
-  //   var longitude = response.lgn[i];
+    //   // Set the data location property to a variable
+    //   var latitude = response.lat[i];
+    //   var longitude = response.lgn[i];
 
-  //   console.log(latitude)
-  //   console.log(longitude)
+    //   console.log(latitude)
+    //   console.log(longitude)
 
-  //   L.circle([latitude,longitude], {
-  // color: 'red',
-  // fillColor: '#f03',
-  // fillOpacity: 0.5,
-  // radius: 50
-  //   }).addTo(myMap);
+    //   L.circle([latitude,longitude], {
+    // color: 'red',
+    // fillColor: '#f03',
+    // fillOpacity: 0.5,
+    // radius: 50
+    //   }).addTo(myMap);
 
-  //   // // Check for location property
-  //   // if (latitude) {
+    //   // // Check for location property
+    //   // if (latitude) {
 
-  //   //   // Add a new marker to the cluster group and bind a pop-up
-  //   //   markers.addLayer(L.marker([longitude, latitude]));
-  //   // //     .bindPopup(response[i].descriptor + "<hr>" + response[i].cross_street_1 + "<br>" + response[i].cross_street_2));
-  //   //  }
+    //   //   // Add a new marker to the cluster group and bind a pop-up
+    //   //   markers.addLayer(L.marker([longitude, latitude]));
+    //   // //     .bindPopup(response[i].descriptor + "<hr>" + response[i].cross_street_1 + "<br>" + response[i].cross_street_2));
+    //   //  }
 
-  // }
+    // }
 
-  // Add our marker cluster layer to the map
-  myMap.addLayer(markers);
+    // Add our marker cluster layer to the map
+    myMap.addLayer(markers);
 
-});
+
+
+
+
+
+  });
