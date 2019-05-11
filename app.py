@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 sql_query = "SELECT * FROM foreclosure_final"
 
+
 #################################################
 # Database Setup
 #################################################
@@ -24,21 +25,36 @@ engine = create_engine(
 # # # Create a remote database engine connection
 conn = engine.connect()
 
+
 @app.route("/")
 def index():
     """Return the homepage."""
     return render_template("index.html")
 
-@app.route("/names")
-def names():
+@app.route("/addresses")
+def addresss():
     """Return foreclosure list."""
 
-    data_df = pd.read_sql(sql_query, conn)
+    db = pd.read_csv("foreclosure_data_4-12v2.csv")
+    addresses = pd.DataFrame(db).to_dict('records')
+    print(addresses)
+    return jsonify(addresses)
 
-    names = data_df.to_dict('records')
 
-    print(names)
-    return jsonify(names)
+@app.route("/table")
+def table():
+    return render_template("table2.html")
+
+# @app.route("/names")
+# def names():
+#     """Return foreclosure list."""
+
+#     data_df = pd.read_sql(sql_query, conn)
+
+#     names = data_df.to_dict('records')
+
+#     print(names)
+#     return jsonify(names)
 
 
 @app.route("/foreclosure_data")
@@ -66,41 +82,41 @@ def foreclosure_data():
     # return jsonify(data_dict)
     # WARNING: This approach contains the keys. If you want to get only the values, use
     # Object.values() in your JS file
- 
-    ## option 4 - import from csv
+
+    # option 4 - import from csv
     # data_df = pd.read_csv("foreclosure_data_4-12.csv")
     # data_json = data_df.to_json()
     # return data_json
 
 
-@app.route("/table")
-def table():
-    """Return foreclosure list."""
-    data_df = pd.read_sql(sql_query, conn)
-    print("read data")
-    names = data_df.to_dict('records')
+# @app.route("/table")
+# def table():
+#     """Return foreclosure list."""
+#     data_df = pd.read_sql(sql_query, conn)
+#     print("read data")
+#     names = data_df.to_dict('records')
 
-    table_df = data_df[["property_address","zestimate","bedrooms","bathrooms","deposit","principal_amount","estimated_equity","date_of_auction","auction_location"]]
-    # table_df = table_df.rename(columns={"property_address":"Property Address"}, inplace=True)
+#     table_df = data_df[["property_address","zestimate","bedrooms","bathrooms","deposit","principal_amount","estimated_equity","date_of_auction","auction_location"]]
+#     # table_df = table_df.rename(columns={"property_address":"Property Address"}, inplace=True)
 
-    columnNames = table_df.columns.values
-    print("finished table endpoint")
-    return render_template('table.html', records=names, colnames=columnNames)
+#     columnNames = table_df.columns.values
+#     print("finished table endpoint")
+#     return render_template('table.html', records=names, colnames=columnNames)
 
 @app.route("/graph.html")
 def graph():
     """Return foreclosure list."""
-    
+
     # # Use Pandas to perform the sql query
     # stmt = db.session.query(Samples).statement
     # df = pd.read_sql_query(stmt, db.session.bind)
     # Return a list of the column names (sample names)
-    
+
     #graph = pd.DataFrame(db).to_dict('records')
     data_df = pd.read_sql(sql_query, conn)
-    graph_data = data_df[["principal_amount","zestimate"]]
-    #print(graph)
-    #return graph.to_json(orient="records")
+    graph_data = data_df[["principal_amount", "zestimate"]]
+    # print(graph)
+    # return graph.to_json(orient="records")
     graph = pd.DataFrame(graph_data).to_dict('records')
     data = {'graph': graph}
     return render_template("graph.html", data=data)
@@ -109,21 +125,22 @@ def graph():
 @app.route("/graphdata")
 def graphdata():
     """Return foreclosure list."""
-    
+
     # # Use Pandas to perform the sql query
     # stmt = db.session.query(Samples).statement
     # df = pd.read_sql_query(stmt, db.session.bind)
     # Return a list of the column names (sample names)
-    
+
     #graph = pd.DataFrame(db).to_dict('records')
     data_df = pd.read_sql(sql_query, conn)
-    graph_data = data_df[["principal_amount","zestimate"]]
+    graph_data = data_df[["principal_amount", "zestimate"]]
 
     graph = pd.DataFrame(graph_data).to_dict('records')
 
     print(graph)
     # return graph.to_json(orient="records")
     return jsonify(graph)
+
 
 @app.route("/map")
 def map():
