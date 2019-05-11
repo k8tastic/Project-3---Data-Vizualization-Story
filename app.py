@@ -10,6 +10,7 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 
 
 #################################################
@@ -76,6 +77,14 @@ def foreclosure_data():
     # data_json = data_df.to_json()
     # return data_json
 
+
+@app.route("/table_data")
+def table_data():
+    """Return foreclosure list."""
+
+    data_df = pd.read_sql("SELECT estimated_equity, date_of_auction, bedrooms, bathrooms, auction_location, listing_url FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1901-01-01' AND '2020-12-31')", conn)
+    data_dict = data_df.to_json(orient="records")
+    return data_dict
 
 # @app.route("/addresses")
 # def addresss():
