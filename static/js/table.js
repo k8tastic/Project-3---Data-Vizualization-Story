@@ -25,7 +25,7 @@ var table_data = $.getJSON('/table_data', function( data) {
 
 /*
 $(document).ready( function () {
-    d3.json("/addresses").then((data)=>{
+    d3.json("/foreclosure_data").then((data)=>{
     console.log({data});
         var region_name =data.map(d=>d['region_name']);
         var zstreet_address = data.map(d=>d['zstreet_address']);

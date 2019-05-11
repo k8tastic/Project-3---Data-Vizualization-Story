@@ -100,18 +100,7 @@ def table_data():
 
 #     return jsonify(addr_df)
 
-@app.route("/addresses")
-def addresss():
-   """Return foreclosure list."""
 
-   db = pd.read_csv("foreclosure_data_4-12v2.csv")
-   addresses = pd.DataFrame(db).to_dict('records')
-   print(addresses)
-   return jsonify(addresses)
-
-@app.route("/table")
-def table():
-   return render_template("table2.html")
 
 
 @app.route("/table_andrew")
