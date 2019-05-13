@@ -18,8 +18,8 @@ app.config['JSON_SORT_KEYS'] = False
 #################################################
 # AWS Database Connection
 
-engine = create_engine(
-    f"mysql://{remote_dbuser}:{remote_dbpwd}@{remote_db_endpoint}:{remote_db_port}/{remote_dbname}")
+engine = create_engine("mysql://foreclosurefools:fore4444closuref00ls@foreclosurefools.chyqd9h8fqhz.us-east-1.rds.amazonaws.com:3306/root")
+
 
 # # # Create a remote database engine connection
 #conn = engine.connect()
