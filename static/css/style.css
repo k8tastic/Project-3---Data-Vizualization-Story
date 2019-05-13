@@ -11,7 +11,7 @@ html {
   height: 100%;
 }
 
-    
+
 * {
   box-sizing: border-box;
   font-family: Ubuntu, sans-serif;
@@ -25,6 +25,13 @@ body {
   background: #1aa8bb;
 }
 
+tr{
+  color: #000000;
+}
+
+td{
+  color: #000000;  
+}
 /* The wrapper contains all of the page's content besides the footer, which is pushed to the bottom of the page */
 .wrapper {
   position: relative;

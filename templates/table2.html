@@ -11,7 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
-  <link  href="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" >
+  <link href="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" >
   <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.7/js/jquery.dataTables.min.js"></script>
 
 </head>
@@ -22,7 +22,7 @@
     <!-- Start of Nav Section -->
       <nav class="navbar navbar-default">
           <div class="container-fluid navbar-custom">
- 
+
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="row">
               <div class="navbar-header">
@@ -32,17 +32,17 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
- 
- 
+
+
               <!-- Collect the nav links, forms, and other content for toggling -->
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right navbar-right-custom">
- 
+
                   <li><a href="/">Home</a></li>
                   <li><a href="/map">Map</a></li>
                   <li><a href="/table">Auction List</a></li>
                   <li><a href="/data">Market Value</a></li>
- 
+
                 </ul>
               </div><!-- /.navbar-collapse -->
             </div>
@@ -53,13 +53,13 @@
     <!-- Begin Banner Pic Section -->
     <div class="header-row" id="header-row" style="padding: 0px; overflow:hidden; height:100px;">
  <div class="container-fluid" style="padding: 0px;">
-    <div class="row"> 
-       <div class="col-xs-12"> 
+    <div class="row">
+       <div class="col-xs-12">
           <a class="navbar-brand logo" href="index.html">
       <!-- place your image here -->
-             <img src="/static/images/foolsgraphic.jpg" alt="company logo" style="width: 100%;"> 
-          </a> 
-       </div>     
+             <img src="/static/images/foolsgraphic.jpg" alt="company logo" style="width: 100%;">
+          </a>
+       </div>
     </div>
  </div>
 </div>
@@ -73,28 +73,54 @@
     <!-- End of banner -->
 
     <div class = "container-fluid">
-      <div class="col-md-6">      
-          <h1 class="text-left">Addresses</h1>  
+      <div class="col-md-6">
+          <h1 class="text-left">Addresses</h1>
         <p></p>
         <p></p>
       </div>
     </div>
 
     <div class = "container">
+
+      <div class ="searchPanes">Search Panes</div>
+
+      <table id="foreclosuretable" class="display">
+          <thead>
+              <tr>
+                <th class="text-center">Estimated Equity</th>
+                <th class="text-center">Auction Date</th>
+                <th class="text-center">Bedrooms</th>
+                <th class="text-center">Bathrooms</th>
+                <th class="text-center">Auction Location</th>
+              </tr>
+
+              <tbody>
+                      <tr>
+                          <td></td>
+                          <td></td>
+                      </tr>
+
+                  </tbody>
+          </thead>
+      </table>
+
+
+      <!--
       <table id="myTable" class="display">
         <thead>
         <tr>
             <th class="text-center">Region</th>
-            <th class="text-center">Street_Address</th> 
+            <th class="text-center">Street_Address</th>
             <th class="text-center">City</th>
             <th class="text-center">State</th>
             <th class="text-center">Zip</th>
         </tr>
         </thead>
-        
+
           <tbody class="table_text text-center"></tbody>
 
       </table>
+    -->
     </div>
 
     <footer class="footer">
