@@ -31,6 +31,39 @@ def index():
     """Return the homepage."""
     return render_template("index.html")
 
+##### Holding this for the Machine Learning Section #####
+# @app.route("/data")
+# def table():
+#     return render_template("data.html")
+
+@app.route("/table_data")
+def table_data():
+    """Return foreclosure list."""
+
+    conn = engine.connect()
+
+    data_df = pd.read_sql("SELECT zstreet_address, zcity, zstate, zzip, estimated_equity, bedrooms, bathrooms, auction_location FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1970-01-01' AND '2020-12-31') AND (bedrooms >= 1) AND (bathrooms >= 1) ORDER BY estimated_equity DESC", conn)
+    
+   #  data_df.style.format({'estimated_equity': '{:,.1f}'.format})
+    data_df.round({'estimated_equity': 1})
+    data_df = data_df.drop_duplicates(keep='last')
+    data_dict = data_df.to_json(orient="records")
+
+    print("table data endpoint")
+    return data_dict
+
+@app.route("/table")
+def table():
+    return render_template("table.html")
+
+@app.route("/map")
+def map():
+    """Return foreclosure map view."""
+
+    print("map endpoint ")
+
+    return render_template("map.html")
+
 @app.route("/foreclosure_data")
 def foreclosure_data():
     """Return foreclosure list."""
@@ -46,18 +79,6 @@ def foreclosure_data():
     # WARNING: This approach contains the keys. If you want to get only the values, use
     # Object.values() in your JS file
 
-@app.route("/table_data")
-def table_data():
-    """Return foreclosure list."""
-
-    conn = engine.connect()
-
-    data_df = pd.read_sql("SELECT estimated_equity, date_of_auction, bedrooms, bathrooms, auction_location FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1970-01-01' AND '2020-12-31') AND (bedrooms >= 1) AND (bathrooms >= 1) ORDER BY estimated_equity DESC", conn)
-    data_df = data_df.drop_duplicates(keep='last')
-    data_dict = data_df.to_json(orient="records")
-    print("table data endpoint")
-    return data_dict
-
 @app.route("/addresses")
 def addresss():
     """Return foreclosure list from csv file."""
@@ -67,19 +88,9 @@ def addresss():
     print(addresses)
     return jsonify(addresses)
 
-@app.route("/table")
-def table():
-    return render_template("table.html")
-
-@app.route("/map")
-def map():
-    """Return foreclosure map view."""
-
-    print("map endpoint ")
-
-    return render_template("map.html")
-
-#  **************** Previous Versions*************
+#################################################
+               # Previous Versions
+#################################################
 
 # @app.route("/foreclosure_data")
 
