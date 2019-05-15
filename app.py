@@ -117,6 +117,7 @@ def table():
    return render_template("table2.html")
 
 
+
 # @app.route("/table_andrew")
 # def table_andrew():
 #     """Return foreclosure list."""
