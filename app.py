@@ -24,7 +24,7 @@ engine = create_engine(
 
 # # # Create a remote database engine connection
 conn = engine.connect()
-#sql_query = "SELECT zstreet_address, zzip FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1901-01-01' AND '2020-12-31') LIMIT 100"
+#sql_query = "SELECT zstreet_address, zzip, FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1901-01-01' AND '2020-12-31') LIMIT 100"
 
 @app.route("/")
 def index():
@@ -42,15 +42,19 @@ def table_data():
 
     conn = engine.connect()
 
-    data_df = pd.read_sql("SELECT zstreet_address, zcity, zstate, zzip, estimated_equity, bedrooms, bathrooms, auction_location FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1970-01-01' AND '2020-12-31') AND (bedrooms >= 1) AND (bathrooms >= 1) ORDER BY estimated_equity DESC", conn)
-    
+    data = pd.read_sql("SELECT zstreet_address, zcity, zstate, zzip, zestimate, estimated_equity, listing_url, bedrooms, bathrooms, auction_location FROM foreclosure_final WHERE (date_of_auction BETWEEN '1901-01-01' AND '2020-12-31') AND (principal_date BETWEEN '1970-01-01' AND '2020-12-31') AND (bedrooms >= 1) AND (bathrooms >= 1) ORDER BY estimated_equity DESC", conn)
+    data_df = pd.DataFrame(data)
    #  data_df.style.format({'estimated_equity': '{:,.1f}'.format})
     data_df.round({'estimated_equity': 1})
     data_df = data_df.drop_duplicates(keep='last')
     data_dict = data_df.to_json(orient="records")
 
-    print("table data endpoint")
-    return data_dict
+    print("table data endpoint", data_dict)
+    return jsonify(data_df.to_dict(orient='records'))
+
+@app.route("/data")
+def data():
+    return render_template("data.html")
 
 @app.route("/table")
 def table():
