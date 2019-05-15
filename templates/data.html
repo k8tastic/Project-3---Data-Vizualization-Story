@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
   <link href="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" >
   <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.7/js/jquery.dataTables.min.js"></script>
+  <link rel="icon" href="../static/favicon.ico">
 
 </head>
 
@@ -40,7 +41,7 @@
 
                   <li><a href="/">Home</a></li>
                   <li><a href="/map">Map</a></li>
-                  <li><a href="/table">Auction List</a></li>
+                  <li><a href="/table">Auction Table</a></li>
                   <li><a href="/data">Market Value</a></li>
 
                 </ul>
@@ -54,10 +55,10 @@
     <div class="header-row" id="header-row" style="padding: 0px; overflow:hidden; height:100px;">
  <div class="container-fluid" style="padding: 0px;">
     <div class="row">
-       <div class="col-xs-12">
-          <a class="navbar-brand logo" href="index.html">
+        <div class="col-xs-12"> 
+          <a class="navbar-brand logo" href="/">
       <!-- place your image here -->
-             <img src="/static/images/foolsgraphic.jpg" alt="company logo" style="width: 100%;">
+             <img src="/static/images/foolsgraphic.jpg" alt="company logo" class="center">
           </a>
        </div>
     </div>
@@ -66,61 +67,46 @@
     <!-- End Banner Pic Section -->
 
     <!-- Start of banner -->
-    <div class="hero text-left">
-        <h1 class="heading">Upcoming DMV Auctions</h1>
-        <p class="heading">Search Foreclosed Homes</p>
+    <div class="hero text-center">
+        <h1 class="heading">Market Analysis</h1>
+        <!-- <p class="heading">Search Foreclosed Homes</p> -->
     </div>
     <!-- End of banner -->
 
     <div class = "container-fluid">
-      <div class="col-md-6">
-          <h1 class="text-left">Addresses</h1>
+      <div class="col-md-12">
+          <h2 class="text-center">Add the ML stuff here!</h2>
         <p></p>
         <p></p>
       </div>
     </div>
 
     <div class = "container">
+        <div class="col-md-12">
 
-      <div class ="searchPanes">Search Panes</div>
+      <!-- <h3><div class ="searchPanes">Search Panes</div></h3>
 
-      <table id="foreclosuretable" class="display">
-          <thead>
-              <tr>
-                <th class="text-center">Estimated Equity</th>
-                <th class="text-center">Auction Date</th>
-                <th class="text-center">Bedrooms</th>
-                <th class="text-center">Bathrooms</th>
-                <th class="text-center">Auction Location</th>
-              </tr>
-
-              <tbody>
-                      <tr>
-                          <td></td>
-                          <td></td>
-                      </tr>
-
-                  </tbody>
-          </thead>
-      </table>
-
-
-      <!--
+    
       <table id="myTable" class="display">
         <thead>
         <tr>
-            <th class="text-center">Region</th>
             <th class="text-center">Street_Address</th>
             <th class="text-center">City</th>
             <th class="text-center">State</th>
             <th class="text-center">Zip</th>
+            <th class="text-center">Zestimate</th>
+            <th class="text-center">Estimated Equity</th>
+            <th class="text-center">Bedrooms</th>
+            <th class="text-center">Bathrooms</th>
+            <th class="text-center">Auction Location</th>
+            <th class="text-center">Listing URL</th>
         </tr>
         </thead>
 
           <tbody class="table_text text-center"></tbody>
 
-      </table>
-    -->
+      </table> -->
+   
     </div>
 
     <footer class="footer">

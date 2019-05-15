@@ -25,6 +25,14 @@ body {
   background: #1aa8bb;
 }
 
+h1{
+  color: #000000;
+}
+
+h2{
+  color: #000000;
+}
+
 tr{
   color: #000000;
 }
@@ -38,15 +46,25 @@ td{
   min-height: 100%;
   /* padding-bottom: 130px; */
   overflow: auto;
-  background: #04629c;
+  background: #1aa8bb;
 }
 
 .navbar{
-  background: #6f1b80;
+  /* background: #6f1b80; */
+  background:  #04629c;
   font-family: Ubuntu, sans-serif;
   font-size: 20px;
   margin: 10px;
 }
+
+/* .header-row{
+  /* height: 100%; */
+  /* padding: 10;
+  margin: 10; */
+  /* align-content: center;
+  align-items: center;
+  text-align: center;
+} */ 
 
 /* Table properties */
 .table_text{
@@ -56,13 +74,14 @@ td{
 
 /* The footer is positioned at the bottom of the page */
 .footer {
-  position: relative;
+  position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
   min-height: 100px;
-  background: #2c0b85;
-  border-top: 5px solid white;
+  background: #041c2b;
+  border-top: 10px solid white;
+  border-bottom: 10px solid white;
 }
 
 /* The code styles the text at the bottom of the footer */
@@ -72,9 +91,10 @@ td{
   bottom: 40px;
   margin-top: 10px;
   left: 0;
-  padding: 5px;
+  padding: 15px;
   background: #041c2b;
   text-align: center;
   font-family: Ubuntu, sans-serif;
   font-size: 20px;
+  border-top: 10px solid white;
 }
