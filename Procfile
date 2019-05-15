@@ -1,1 +1,1 @@
-web: gunicorn foreclosure-fools.app:app
+web: gunicorn app:app
