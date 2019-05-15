@@ -48,7 +48,7 @@ d3.json(url).then(function(response){
 
       // Add a new marker to the cluster group and bind a pop-up
         markers.addLayer(L.marker([latitude, longitude])
-          .bindPopup(response[i].auction_location + "<hr>" + response[i].auction_time + "<hr>" + response[i].city_url + "<hr>" + response[i].auction_date + "<hr>" + response[i].listing_url + "<hr>" + response[i].estimated_equity + "<hr>")
+          .bindPopup("<b> auction location: </b>" + response[i].auction_location + "<hr>" + "<b> auction time:  </b>" + response[i].auction_time + "<hr>" + "<b> auction date: </b>" + response[i].auction_date + "<hr>" + "<b> link to listing: </b>" + response[i].listing_url + "<hr>" + "<b> estimated equity: </b>" + "$"+response[i].estimated_equity + "<hr>")
         );
 
       } catch (e) {
